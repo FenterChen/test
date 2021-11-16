@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3dlearn</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <script src="three.min.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+    <style>
+        .navbar {
+            width: 100%;
+            margin: auto;
+            padding: 10px 0px;
+            font-size: 20px;
+            text-align: center;
+            background-color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar"><span>這個會旋轉的甜甜圈</span></div>
+
+    <script>
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, document.documentElement.clientWidth / document.documentElement.clientHeight);
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+        $('body').append(renderer.domElement);
+
+        var geometry = new THREE.TorusGeometry(2, 0.2, 11, 100);
+        var material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+        var obj = new THREE.Mesh(geometry, material);
+
+        scene.add(obj);
+
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        directionalLight.position.x = 3;
+        directionalLight.position.y = 3;
+        directionalLight.position.z = 4;
+        scene.add(directionalLight);
+
+        obj.position.z = -7;
+        obj.rotation.x = 10;
+        obj.rotation.y = 5;
+
+        renderer.render(scene, camera);
+
+        renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
+
+        window.onresize = function () {
+            renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
+            camera.aspect = window.innerWidth / document.documentElement.clientHeight;
+            camera.updateProjectionMatrix();
+        };
+
+        var animate = function () {
+            obj.rotation.x += 0.01;
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+
+    </script>
+
+</body>
+
+</html>
